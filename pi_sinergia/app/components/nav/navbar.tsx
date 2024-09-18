@@ -15,7 +15,7 @@ const NavBar = () => {
             z-30
             shadow-sm
         ">
-            <div className="py-4 border-b-[1px]">
+            <div className="py-2 border-b-[1px]">
                 <Container>
                     <div className="
                         flex
@@ -24,16 +24,18 @@ const NavBar = () => {
                         gap-3
                         md:gap-0
                     ">
-                        <div className="flex items-center gap-3">
-                            <Image 
-                                src='/logo_sinergia-rmv.png' 
-                                alt="Logo" 
-                                width={70} 
-                                height={50}
-                                className="h-auto w-auto"
-                            />
-                            <Link href="/" className={`${redressed.className} font-bold text-2xl`}>
-                                Farmácia Sinergia
+                        <div className="flex items-center gap-2">
+                            <Link href="/" className="flex items-center gap-2">
+                                <Image
+                                    src="/logo_sinergia-rmv.png"
+                                    alt="Logo"
+                                    width={60}
+                                    height={60}
+                                    className="h-auto w-auto"
+                                />
+                                <span className={`${redressed.className} font-bold text-2xl`}>
+                                    Farmácia Sinergia
+                                </span>
                             </Link>
                         </div>
                         <div className="hidden md:block">Buscar</div>
