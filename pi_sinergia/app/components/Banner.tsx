@@ -10,20 +10,20 @@ const Banner = () => {
                 <div className="m-8 md:mb-0 text-center">
                     <h1 className="text-4xl md:text-6xl
                     font-bold text-white mb-4">
-                        REMEDINHO DO OTTON
+                        Black Friday
                     </h1>
                     <p className="text-lg md:text-xl
                     text-white mb-2">
-                        VEM COMPRAR VEM
+                        Aqui você encontra os produtos certos para você 
                     </p>
-                    <p className="text-2xl md:text-5xl text-yellow-400
+                    <p className="text-2xl md:text-4xl text-yellow-400
                     font-bold">
-                        REMEDINHO TOP
+                        50% OFF em todos os nossos produtos
                     </p>
                 </div>
                 <div className="w-1/3 relative aspect-video">
                     <Image
-                    src="/banner-image.png"
+                    src="/banner-fisioquantic.png"
                     fill
                     alt="Banner Image"
                     className="object-contain"

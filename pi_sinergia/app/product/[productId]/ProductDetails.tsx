@@ -4,8 +4,10 @@ import Button from "@/app/components/Button";
 import ProductImage from "@/app/components/Products/ProductImage";
 import SetQuantity from "@/app/components/Products/SetQuantity";
 import { useCart } from "@/hooks/useCart";
-import { Rating } from "@mui/material";
-import React, { useCallback, useState } from "react";
+import { Rating } from "@mui/material"; 
+import { MdCheckCircle } from 'react-icons/md'
+import React, { useCallback, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 interface ProductDetailsProps{
     product: any
@@ -30,10 +32,11 @@ export type SelectedImgType = {
 
 const Horizontal = () =>{
     return <hr className="w-[30%] my-2"/>
-}
+} 
 
-const ProductDetails:React.FC<ProductDetailsProps> = ({product}) => {
-    const {handleAddProductToCart, cartProducts} = useCart()
+const ProductDetails:React.FC<ProductDetailsProps> = ({ product }) => {
+    const {handleAddProductToCart, cartProducts} = useCart();
+    const [isProductInCart, setIsProductInCart] = useState(false);
     const {cartTotalQty} = useCart()
     const [cartProduct, setCartProduct] = useState<CartProductType>({
         id:product.id,
@@ -41,10 +44,24 @@ const ProductDetails:React.FC<ProductDetailsProps> = ({product}) => {
         description:product.description,
         category:product.category,
         brand:product.brand,
-        selectedImg: {...product.images[0]},
+        selectedImg: {...product.images[0] },
         quantity: 1,
         price: product.price,
     });
+    const router = useRouter()
+
+
+    useEffect(() => {
+        setIsProductInCart(false)
+
+        if(cartProducts) {
+            const existingIndex = cartProducts.findIndex((item) => item.id === product.id);
+
+            if(existingIndex > -1){
+                setIsProductInCart(true);
+            }
+        }
+    }, [cartProducts]);
 
 
     const [ratingValue, setRatingValue] = React.useState<number | null>(4);
@@ -86,7 +103,6 @@ const ProductDetails:React.FC<ProductDetailsProps> = ({product}) => {
                 onChange={handleRatingChange}      
                 precision={0.5}                    
                 />
-                <div>{product.reviews.length} reviews</div>
             </div>
             <Horizontal />
             <div className="text-justify">{product.description}</div>
@@ -99,17 +115,35 @@ const ProductDetails:React.FC<ProductDetailsProps> = ({product}) => {
             </div>
             <div className={product.inStock ? 'text-teal-400' : 'text-rose-400'}>{product.inStock ? "Em estoque" : "Fora de estoque"}</div>
             <Horizontal />
-            <SetQuantity
-            cartProduct={cartProduct}
-            handleQtyIncrease={handleQtyIncrease}
-            handleQtyDecrease={handleQtyDecrease}
-            />
-            <Horizontal />
-            <div className="max-w-[300px]">
-                <Button label="Adicionar ao Carrinho" onClick={() => handleAddProductToCart(cartProduct)} />
-            </div>
+            {isProductInCart ?( 
+                <>
+                <p className="mb-2 text-slate-500 flex items-center gap-1">
+                    <MdCheckCircle className="text-teal-400"  size={20}/>
+                    <span>Produto adicionado ao carrinho</span>
+                </p>
+                <div className="max-w-[300px]">
+                    <Button label="Ver carrinho" outline onClick={() =>{
+                        router.push('/cart')
+                    }} />
+                </div>
+                </>
+            ) : (
+            <>
+                <SetQuantity
+                cartProduct={cartProduct}
+                handleQtyIncrease={handleQtyIncrease}
+                handleQtyDecrease={handleQtyDecrease}
+                />
+                <Horizontal />
+                <div className="max-w-[300px]">
+                    <Button label="Adicionar ao Carrinho" 
+                    onClick={() => handleAddProductToCart(cartProduct)} />
+                </div>
+            </>
+            )}
         </div>
     </div>; 
 };
+
  
 export default ProductDetails;
