@@ -6,7 +6,6 @@ import Banner from "./components/Banner";
 import ProductCard from "./components/Products/ProductCard";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
-import SearchBar from "./components/nav/SearchBar";
 
 export default function Home() {
   const params = useSearchParams();
