@@ -5,15 +5,23 @@ import { MdArrowBack } from "react-icons/md";
 import Button from "../components/Button";
 import ItemContent from "./ItemContent";
 import { formatPrice } from "@/utils/formatPrice";
+import { SafeUser } from "@/types";
+import { useRouter } from "next/navigation";
+
+interface CartClientProps{
+    currentUser: SafeUser | null;
+}
 
 
-const CartClient =() => {
+const CartClient:React.FC<CartClientProps> =({currentUser}) => {
     const {cartProducts, handleClearCart, cartTotalAmount} = useCart()
+
+    const router = useRouter()
 
     if(!cartProducts || cartProducts.length === 0) {
         return(
             <div className="flex flex-col items-center">
-                <div className="text-2x1">Seu Carrinho está cheio!</div>
+                <div className="text-2x1">Seu Carrinho está vazio!</div>
                 <div>
                     <Link
                         href={"/"}
@@ -54,8 +62,9 @@ const CartClient =() => {
                             <span>{formatPrice(cartTotalAmount)}</span>
                         </div>
                         <p className="text-slate-500">Taxa de entrega calculada no final do pagamento</p>
-                        <Button label="Finalizar pedido" onClick={() =>
-                            {}}/>
+                        <Button label={currentUser ? 'Finalizar pedido' : 'Faça login para finalizar pedido'} outline = { currentUser ? false : true}
+                             onClick={() =>
+                            { currentUser ? router.push("/checkout") : router.push("/login")}}/>
                         <Link
                             href={"/"}
                             className="

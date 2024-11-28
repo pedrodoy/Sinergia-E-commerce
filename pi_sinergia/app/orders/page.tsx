@@ -1,0 +1,30 @@
+import { getCurrentUser } from "@/actions/getCurrentUser";
+import Container from "@/app/components/Container";
+import NullData from "@/app/components/NullData";
+import OrdersClient from "./OrderClient";
+import getOrdersByUserId from "@/actions/getOrdersByUserId";
+
+const Orders = async () => {
+
+    const currentUser = await getCurrentUser()
+
+    if(!currentUser) {
+        return <NullData title="Ops! Acesso negado!" />;
+    }
+
+    const orders = await getOrdersByUserId(currentUser.id);
+
+    if(!orders) {
+        return <NullData title="Sem pedidos ainda..." />;
+    }
+
+    return ( 
+        <div className="pt-8">
+            <Container>
+                <OrdersClient orders={orders} />
+            </Container>
+        </div>
+ );
+}
+ 
+export default Orders;
